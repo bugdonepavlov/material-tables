@@ -17,8 +17,6 @@ const actions = createActions(
   'CREATE_USER_REQUEST',
   'CREATE_USER_SUCCESS',
   'CREATE_USER_FAILURE',
-
-  'RESET_FILTER',
 );
 
 const effects = {
@@ -45,7 +43,7 @@ const effects = {
         lastname: 'Error',
       };
 
-      dispatch(actions.getPassSuccess());
+      dispatch(actions.createUserFailure());
       actionsForm.setErrors({ ...errors });
       actionsForm.setSubmitting(false);
     }
