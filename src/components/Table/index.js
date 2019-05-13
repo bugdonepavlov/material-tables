@@ -88,7 +88,6 @@ const TableUI = ({ data }) => {
                         active={table.orderBy === row.id}
                         direction={table.order}
                         onClick={() => handleRequestSort(row.id)}
-                        // onClick={this.createSortHandler(row.id)}
                       >
                         {row.label}
                       </TableSortLabel>
