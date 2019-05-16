@@ -95,9 +95,6 @@ const cs = cb =>
 
 const selectors = {
   getMainData: cs(s => s.data),
-  getManagementData: cs(s => s.data.filter(e => e.category === 'management')),
-  getHumanData: cs(s => s.data.filter(e => e.category === 'human resources')),
-  getAccountingData: cs(s => s.data.filter(e => e.category === 'accounting')),
   getNavigation: cs(s => {
     const nav = s.data.reduce((acc, current) => {
       return acc.indexOf(current.category) === -1 && !!current.category.length
@@ -107,7 +104,6 @@ const selectors = {
 
     return ['all', ...nav.sort(), ''];
   }),
-  getEmptyCategoryData: cs(s => s.data.filter(e => !e.category)),
   getLoading: cs(s => s.loading),
   getErrors: cs(s => s.error),
 };

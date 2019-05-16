@@ -13,16 +13,7 @@ import Tab from '@material-ui/core/Tab';
 import Table from 'components/Table';
 import Header from './Header';
 
-const Main = ({
-  fetchDataTable,
-  loading,
-  nav,
-  mainData,
-  managementData,
-  accountData,
-  humanData,
-  emptyData,
-}) => {
+const Main = ({ fetchDataTable, loading, nav, data }) => {
   const [currentTab, setTab] = useState(0);
 
   useEffect(() => {
@@ -37,7 +28,7 @@ const Main = ({
     <Content>
       <Header />
       <ContainerTables>
-        {!loading && !!mainData ? (
+        {!loading && !!data ? (
           <>
             <AppBar position="static">
               <Tabs
@@ -58,11 +49,15 @@ const Main = ({
               </Tabs>
             </AppBar>
             <TabsContainer>
-              {currentTab === 0 && <Table data={mainData} />}
-              {currentTab === 1 && <Table data={accountData} />}
-              {currentTab === 2 && <Table data={humanData} />}
-              {currentTab === 3 && <Table data={managementData} />}
-              {currentTab === 4 && <Table data={emptyData} />}
+              {nav.map((entity, index) => {
+                let newData = data.filter(e => e.category === entity);
+
+                if (entity === 'all') {
+                  newData = data;
+                }
+
+                return currentTab === index && <Table data={newData} />;
+              })}
             </TabsContainer>
           </>
         ) : (
@@ -75,11 +70,7 @@ const Main = ({
 
 export default connect(
   state => ({
-    mainData: selectors.getMainData(state),
-    managementData: selectors.getManagementData(state),
-    humanData: selectors.getHumanData(state),
-    accountData: selectors.getAccountingData(state),
-    emptyData: selectors.getEmptyCategoryData(state),
+    data: selectors.getMainData(state),
     loading: selectors.getLoading(state),
     nav: selectors.getNavigation(state),
   }),
@@ -88,39 +79,7 @@ export default connect(
 
 Main.propTypes = {
   fetchDataTable: PropTypes.func.isRequired,
-  mainData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      lastname: PropTypes.string,
-      category: PropTypes.string,
-    }),
-  ).isRequired,
-  managementData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      lastname: PropTypes.string,
-      category: PropTypes.string,
-    }),
-  ).isRequired,
-  humanData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      lastname: PropTypes.string,
-      category: PropTypes.string,
-    }),
-  ).isRequired,
-  accountData: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      lastname: PropTypes.string,
-      category: PropTypes.string,
-    }),
-  ).isRequired,
-  emptyData: PropTypes.arrayOf(
+  data: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
       name: PropTypes.string,
